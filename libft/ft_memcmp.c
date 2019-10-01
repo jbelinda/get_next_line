@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/01 17:55:19 by jbelinda         ###   ########.fr       */
+/*   Created: 2019/09/15 17:53:53 by jbelinda          #+#    #+#             */
+/*   Updated: 2019/09/15 18:01:34 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stddef.h>
 
-# include <limits.h>
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	const unsigned char *ls;
+	const unsigned char *rs;
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# elif BUFF_SIZE > SSIZE_MAX
-#  undef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# endif
-
-#define CHUNK_SIZE	PAGE_SIZE
-
-# define GNL_OK (1)
-# define GNL_FIN (0)
-# define GNL_ERR (-1)
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+	ls = (const unsigned char *)s1;
+	rs = (const unsigned char *)s2;
+	while (n--)
+		if (*ls++ != *rs++)
+			return (*--ls - *--rs);
+	return (0);
+}

@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memrelease.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/01 17:55:19 by jbelinda         ###   ########.fr       */
+/*   Created: 2019/09/19 01:23:29 by jbelinda          #+#    #+#             */
+/*   Updated: 2019/09/19 19:10:09 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stdlib.h>
 
-# include <limits.h>
+/*
+** Releases dynamically allocated NULL-terminated array of pointers
+*/
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# elif BUFF_SIZE > SSIZE_MAX
-#  undef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# endif
+void	ft_memrelease(void **a)
+{
+	unsigned	i;
 
-#define CHUNK_SIZE	PAGE_SIZE
-
-# define GNL_OK (1)
-# define GNL_FIN (0)
-# define GNL_ERR (-1)
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	while (a[i])
+		free(a[i++]);
+	free(a);
+}

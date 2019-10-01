@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/01 17:55:19 by jbelinda         ###   ########.fr       */
+/*   Created: 2019/09/19 01:26:38 by jbelinda          #+#    #+#             */
+/*   Updated: 2019/09/19 19:18:48 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <limits.h>
+char	*ft_strtrim(const char *s)
+{
+	char		*r;
+	size_t		n;
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# elif BUFF_SIZE > SSIZE_MAX
-#  undef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# endif
-
-#define CHUNK_SIZE	PAGE_SIZE
-
-# define GNL_OK (1)
-# define GNL_FIN (0)
-# define GNL_ERR (-1)
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+	while (ft_isspace(*s))
+		s++;
+	if (*s == EOS)
+		return ((char *)ft_memalloc(1));
+	r = (char *)s + ft_strlen(s);
+	while (ft_isspace(*--r))
+		;
+	n = r - s + 1;
+	if ((r = (char *)malloc(sizeof(char) * (n + 1))) != NULL)
+	{
+		r = ft_strncpy(r, s, n);
+		r[n] = EOS;
+	}
+	return (r);
+}

@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/01 17:55:19 by jbelinda         ###   ########.fr       */
+/*   Created: 2019/09/04 17:39:22 by jbelinda          #+#    #+#             */
+/*   Updated: 2019/09/19 19:12:27 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <limits.h>
-
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# elif BUFF_SIZE > SSIZE_MAX
-#  undef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
-# endif
-
-#define CHUNK_SIZE	PAGE_SIZE
-
-# define GNL_OK (1)
-# define GNL_FIN (0)
-# define GNL_ERR (-1)
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+void	ft_putstr(char const *s)
+{
+	if (s)
+		ft_putstr_fd(s, STDOUT_FILENO);
+}
