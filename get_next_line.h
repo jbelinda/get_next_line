@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/01 17:55:19 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/02 18:13:44 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef			struct s_fdnode	t_fdnode;
 typedef			struct s_schunk	t_schunk;
 
 struct			s_fdnode {
+	int			status;
 	int			fd;
 	size_t		i;
 	size_t		bytes_in_buf;
