@@ -14,6 +14,8 @@
 # define GET_NEXT_LINE_H
 
 # include <limits.h>
+# include <stddef.h>
+# include "libft.h"
 
 # ifndef BUFF_SIZE
 #  define BUFF_SIZE PAGE_SIZE
@@ -27,6 +29,23 @@
 # define GNL_OK (1)
 # define GNL_FIN (0)
 # define GNL_ERR (-1)
+
+typedef			struct s_fdnode	t_fdnode;
+typedef			struct s_schunk	t_schunk;
+
+struct			s_fdnode {
+	int			fd;
+	size_t		i;
+	size_t		bytes_in_buf;
+	char		*buf;
+	t_fdnode	*next;
+};
+
+struct			s_schunk {
+	char		*chunk;
+	t_schunk	*next;
+};
+
 
 int	get_next_line(const int fd, char **line);
 
