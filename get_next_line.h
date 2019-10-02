@@ -18,13 +18,13 @@
 # include "libft.h"
 
 # ifndef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
+#  define BUFF_SIZE (4096)
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
-#  define BUFF_SIZE PAGE_SIZE
+#  define BUFF_SIZE (4096)
 # endif
 
-#define CHUNK_SIZE	PAGE_SIZE
+#define CHUNK_SIZE	(4096)
 
 # define GNL_OK (1)
 # define GNL_FIN (0)
@@ -45,6 +45,7 @@ struct			s_fdnode {
 struct			s_schunk {
 	char		*chunk;
 	t_schunk	*next;
+	size_t		i;
 };
 
 

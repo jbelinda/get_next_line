@@ -15,12 +15,32 @@
 #include <unistd.h>
 #include "get_next_line.h"
 
-int			get_next_char(t_fdnode *fd)
+int			gnl_get_next_char(t_fdnode *fd)
 {
 }
 
-t_schunk	*gnl_build_line(t_fdnode *fdnode)
+t_schunk	*gnl_collect_line(t_fdnode *fdnode)
 {
+	t_schunk	*head;
+	t_schunk	*current;
+	int			ch;
+
+	if (!(head = (t_schunk*)malloc(sizeof(t_schunk))))
+		return (NULL);
+	if (!(head->chunk = (char *)malloc(CHUNK_SIZE)))
+	{
+		free(head);
+		return (NULL);
+	}
+	head->next = NULL;
+	head->i = 0;
+	current = head;
+	while ((ch = gnl_get_next_char(fdnode)) > 0)
+	{
+		if (ch == '\n')
+			return (head);
+
+	}
 }
 
 char		*gnl_build_line(t_schunk *chunks)
@@ -69,7 +89,7 @@ int	get_next_line(int fd, char **line)
 		fdnode->next = fdlist;
 		fdlist = fdnode;
 	}
-	if (chunks = gnl_collect_line(fdnode))
+	if ((chunks = gnl_collect_line(fdnode)))
 		*line = gnl_build_line(chunks);
 	return (fdnode->status);
 }	
