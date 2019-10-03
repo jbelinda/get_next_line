@@ -6,7 +6,7 @@
 #    By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/19 18:52:47 by jbelinda          #+#    #+#              #
-#    Updated: 2019/10/01 20:41:28 by jbelinda         ###   ########.fr        #
+#    Updated: 2019/09/23 03:05:35 by jbelinda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,13 +92,14 @@ SRC +=					\
 	   ft_islower.c		\
 	   ft_isspace.c		\
 	   ft_memrelease.c	\
+	   ft_memjoin.c		\
 	   ft_strndup.c		\
 	   ft_min.c			\
 	   ft_max.c
 
 OBJ = $(SRC:.c=.o)
-CC = gcc
-INC = includes
+CC = clang
+INC = includes/
 CFLAGS = -Wall -Wextra -Werror -I $(INC)
 
 .PHONY:	all, clean, fclean, re

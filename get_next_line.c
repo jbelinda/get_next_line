@@ -45,6 +45,33 @@ t_schunk	*gnl_collect_line(t_fdnode *fdnode)
 
 char		*gnl_build_line(t_schunk *chunks)
 {
+	size_t		len;
+	t_schunk	*current;
+	char		*str;
+	char		*dst;
+
+	len = 0;
+	current = chunks;
+	while (current)
+	{
+		len += current->i;
+		current = current->next;
+	}
+	current = chunks;
+	if ((str = (char *)malloc(len + 1)))
+	{
+		dst = str;
+		while (current)
+		{
+			dst = ft_memcpy(dst, current->chunk, current->i) + current->i;
+			*dst = '\0';
+			current = current->next;
+			free(chunks->chunk);
+			free(chunks);
+			chunks = current;
+		}
+	}
+	return (str);
 }
 
 int	get_next_line(int fd, char **line)
