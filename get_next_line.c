@@ -58,13 +58,12 @@ char		*gnl_build_line(t_schunk *chunks)
 		current = current->next;
 	}
 	current = chunks;
-	if ((str = (char *)malloc(len + 1)))
+	if ((str = (char *)ft_memalloc(len + 1)))
 	{
 		dst = str;
 		while (current)
 		{
 			dst = ft_memcpy(dst, current->chunk, current->i) + current->i;
-			*dst = '\0';
 			current = current->next;
 			free(chunks->chunk);
 			free(chunks);
@@ -119,4 +118,4 @@ int	get_next_line(int fd, char **line)
 	if ((chunks = gnl_collect_line(fdnode)))
 		*line = gnl_build_line(chunks);
 	return (fdnode->status);
-}	
+}
