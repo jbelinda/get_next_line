@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/03 19:30:03 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/03 23:04:33 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #define CHUNK_SIZE	(4096)
 
 # define GNL_OK (1)
-# define GNL_FIN (0)
+# define GNL_EOF (0)
 # define GNL_ERR (-1)
 
 typedef			struct s_fdnode	t_fdnode;
