@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/02 18:13:44 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/03 19:30:03 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ struct			s_fdnode {
 	int			fd;
 	size_t		i;
 	size_t		bytes_in_buf;
-	char		*buf;
+	char		buf[BUFF_SIZE];
 	t_fdnode	*next;
 };
 
 struct			s_schunk {
-	char		*chunk;
+	char		chunk[CHUNK_SIZE];
 	t_schunk	*next;
 	size_t		i;
 };

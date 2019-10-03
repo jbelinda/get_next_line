@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/02 18:13:41 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/03 19:34:08 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ t_schunk	*gnl_collect_line(t_fdnode *fdnode)
 
 	if (!(head = (t_schunk*)malloc(sizeof(t_schunk))))
 		return (NULL);
-	if (!(head->chunk = (char *)malloc(CHUNK_SIZE)))
-	{
-		free(head);
-		return (NULL);
-	}
 	head->next = NULL;
 	head->i = 0;
 	current = head;
@@ -65,7 +60,6 @@ char		*gnl_build_line(t_schunk *chunks)
 		{
 			dst = ft_memcpy(dst, current->chunk, current->i) + current->i;
 			current = current->next;
-			free(chunks->chunk);
 			free(chunks);
 			chunks = current;
 		}
@@ -85,11 +79,6 @@ int	get_next_line(int fd, char **line)
 	{
 		if (!(fdlist = (t_fdnode *)malloc(sizeof(t_fdnode))))
 			return (GNL_ERR);
-		if (!(fdlist->buf = (char *)malloc((size_t)BUFF_SIZE)))
-		{
-			free(fdlist);
-			return (GNL_ERR);
-		}
 		fdlist->fd = fd;
 		fdlist->status = GNL_OK;
 		fdlist->i = 0;
@@ -103,11 +92,6 @@ int	get_next_line(int fd, char **line)
 	{
 		if (!(fdnode = (t_fdnode *)malloc(sizeof(t_fdnode))))
 			return (GNL_ERR);
-		if (!(fdnode->buf = (char *)malloc((size_t)BUFF_SIZE)))
-		{
-			free(fdnode);
-			return (GNL_ERR);
-		}
 		fdnode->fd = fd;
 		fdnode->status = GNL_OK;
 		fdnode->i = 0;
