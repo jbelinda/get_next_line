@@ -27,6 +27,7 @@
 #define CHUNK_SIZE	(4096)
 
 # define GNL_OK (1)
+# define GNL_BIN (2)
 # define GNL_EOF (0)
 # define GNL_ERR (-1)
 
@@ -39,12 +40,10 @@ struct			s_fdnode {
 	size_t		i;
 	size_t		bytes_in_buf;
 	char		buf[BUFF_SIZE];
-	t_fdnode	*next;
 };
 
 struct			s_schunk {
 	char		chunk[CHUNK_SIZE];
-	t_schunk	*next;
 	size_t		i;
 };
 

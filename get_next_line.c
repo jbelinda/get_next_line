@@ -17,68 +17,45 @@
 
 int			gnl_get_next_char(t_fdnode *fd)
 {
+	return (fd->fd);
 }
 
-t_schunk	*gnl_collect_line(t_fdnode *fdnode)
+char		*gnl_get_line(t_fdnode *fdnode)
 {
-	t_schunk	*head;
-	t_schunk	*current;
-	int			ch;
-
-	if (!(head = (t_schunk*)malloc(sizeof(t_schunk))))
-		return (NULL);
-	head->next = NULL;
-	head->i = 0;
-	current = head;
-	while ((ch = gnl_get_next_char(fdnode)) > 0)
-	{
-		if (ch == '\n')
-			return (head);
-
-	}
+	return ((char *)(fdnode - fdnode));
 }
 
-char		*gnl_build_line(t_schunk *chunks)
-{
-	size_t		len;
-	t_schunk	*current;
-	char		*str;
-	char		*dst;
-
-	len = 0;
-	current = chunks;
-	while (current)
-	{
-		len += current->i;
-		current = current->next;
-	}
-	current = chunks;
-	if ((str = (char *)ft_memalloc(len + 1)))
-	{
-		dst = str;
-		while (current)
-		{
-			dst = ft_memcpy(dst, current->chunk, current->i) + current->i;
-			current = current->next;
-			free(chunks);
-			chunks = current;
-		}
-	}
-	return (str);
-}
 /*
 ** Lookups for `fd' in `fdlist', creates new node if `fd' not exist
 */
 
 static t_fdnode	*gnl_fd_lookup(fd)
 {
-	static t_fdnode	*fdlist = NULL;
-	t_fdnode		*fds;
+	static t_list	*fdlist = NULL;
+	t_list			*iter;
+	t_fdnode		*sfd;
 
-	if (!fdlist)
+	iter = fdlist;
+	while (iter)
 	{
-
+		if (((t_fdnode *)(iter->content))->fd == fd)
+			return ((t_fdnode *)(iter->content));
+		iter = iter->next;
 	}
+	if (!iter)
+	{
+		if (!(sfd = (t_fdnode *)ft_memalloc(sizeof(t_fdnode))))
+		{
+			sfd->fd = fd;
+			sfd->status = GNL_OK;
+			if ((iter = ft_lstnew((const void *)sfd, sizeof(t_fdnode))))
+			{
+				ft_lstadd(&fdlist, iter);
+				ft_memdel((void **)&sfd);
+			}
+		}
+	}
+	return ((t_fdnode *)(iter->content));
 }
 
 /*
