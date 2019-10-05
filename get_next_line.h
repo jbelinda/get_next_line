@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/03 23:04:33 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/06 02:56:28 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <limits.h>
 # include <stddef.h>
+# include <sys/types.h>
 # include "libft.h"
 
 # ifndef BUFF_SIZE
@@ -34,17 +35,17 @@
 typedef			struct s_fdnode	t_fdnode;
 typedef			struct s_schunk	t_schunk;
 
-struct			s_fdnode {
-	int			status;
-	int			fd;
-	size_t		i;
-	size_t		bytes_in_buf;
-	char		buf[BUFF_SIZE];
+struct		s_fdnode {
+	int		status;
+	int		fd;
+	size_t	i;
+	size_t	bytes_in_buf;
+	u_char	buf[BUFF_SIZE];
 };
 
-struct			s_schunk {
-	char		chunk[CHUNK_SIZE];
-	size_t		i;
+struct		s_schunk {
+	u_char	chunk[CHUNK_SIZE];
+	size_t	i;
 };
 
 

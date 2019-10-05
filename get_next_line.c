@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/03 23:48:49 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/06 02:56:28 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,20 @@
 #include <unistd.h>
 #include "get_next_line.h"
 
+/*
+** Get next character from `fd', implementing buffered input
+** Returns readed character or GNL_ERR on file error or
+** GNL_EOF on end of file;
+*/
+
 int			gnl_get_next_char(t_fdnode *fd)
 {
-	return (fd->fd);
+	if (fd->i < fd->bytes_in_buf)
+		return (fd->buf[fd->i++]);
+	if ((fd->bytes_in_buf = read(fd->fd, fd->buf, BUFF_SIZE)) <= 0)
+		return (fd->bytes_in_buf == 0 ? GNL_EOF : GNL_ERR);
+	fd->i = 1;
+	return (fd->buf[0]);
 }
 
 char		*gnl_get_line(t_fdnode *fdnode)
