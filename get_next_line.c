@@ -17,27 +17,22 @@
 
 /*
 ** Get next character from `fd', implementing buffered input
-** Returns readed character or GNL_ERR on file error or
-** GNL_EOF on end of file;
+** Assigns readed character to `c' and return GNL_OK or
+** GNL_ERR on file error or GNL_EOF on end of file;
 */
 
-int			gnl_get_next_char(t_fdnode *fd)
+static int		gnl_getchar(u_char *c, t_fdnode *fd)
 {
 	if (fd->i < fd->bytes_in_buf)
-		return (fd->buf[fd->i++]);
+		return (*c = fd->buf[fd->i++], GNL_OK);
 	if ((fd->bytes_in_buf = read(fd->fd, fd->buf, BUFF_SIZE)) <= 0)
 		return (fd->bytes_in_buf == 0 ? GNL_EOF : GNL_ERR);
 	fd->i = 1;
-	return (fd->buf[0]);
-}
-
-char		*gnl_get_line(t_fdnode *fdnode)
-{
-	return ((char *)(fdnode - fdnode));
+	return (*c = fd->buf[0], GNL_OK);
 }
 
 /*
-** Lookups for `fd' in `fdlist', creates new node if `fd' not exist
+** Lookups for fd' in `fdlist', creates new node if `fd' not exist
 */
 
 static t_fdnode	*gnl_fd_lookup(fd)
