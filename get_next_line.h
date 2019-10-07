@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/06 02:56:28 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/08 01:16:24 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,17 @@
 #  define BUFF_SIZE (4096)
 # endif
 
-#define CHUNK_SIZE	(4096)
+# define CHUNK_SIZE (4096)
 
 # define GNL_OK (1)
 # define GNL_BIN (2)
 # define GNL_EOF (0)
 # define GNL_ERR (-1)
 
-typedef			struct s_fdnode	t_fdnode;
-typedef			struct s_schunk	t_schunk;
+typedef	struct s_fdnode	t_fdnode;
+typedef	struct s_schunk	t_schunk;
 
 struct		s_fdnode {
-	int		status;
 	int		fd;
 	size_t	i;
 	size_t	bytes_in_buf;
@@ -48,7 +47,6 @@ struct		s_schunk {
 	size_t	i;
 };
 
-
-int	get_next_line(const int fd, char **line);
+int			get_next_line(const int fd, char **line);
 
 #endif
