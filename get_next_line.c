@@ -89,7 +89,7 @@ static int		gnl_get_line(t_list **fdlist, t_fdnode *fdnode, char **line)
 			tmp = fdnode->line;
 			fdnode->line = ft_memjoin(fdnode->line, fdnode->l,
 										fdnode->chunk, fdnode->ci + 1);
-			fdnode->l += fdnode->ci + 1;
+			fdnode->l += fdnode->ci;
 			ft_memdel((void **)&tmp);
 			fdnode->ci = 0;
 			fdnode->chunk[fdnode->ci++] = c;

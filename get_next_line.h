@@ -25,7 +25,9 @@
 #  define BUFF_SIZE (4096)
 # endif
 
-# define CHUNK_SIZE (4096)
+# ifndef CHUNK_SIZE
+#  define CHUNK_SIZE (4096)
+# endif
 
 # define GNL_OK (1)
 # define GNL_EOF (0)
@@ -35,8 +37,8 @@ typedef	struct s_fdnode	t_fdnode;
 
 struct		s_fdnode {
 	int		fd;
-	size_t	i;
 	size_t	bytes_in_buf;
+	size_t	i;
 	u_char	buf[BUFF_SIZE];
 	size_t	ci;
 	u_char	chunk[CHUNK_SIZE];
