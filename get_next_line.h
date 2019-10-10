@@ -19,13 +19,13 @@
 # include "libft.h"
 
 # ifndef BUFF_SIZE
-#  define BUFF_SIZE (2)
+#  define BUFF_SIZE (4096)
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
 #  define BUFF_SIZE (4096)
 # endif
 
-# define CHUNK_SIZE (2)
+# define CHUNK_SIZE (4096)
 
 # define GNL_OK (1)
 # define GNL_EOF (0)

@@ -87,20 +87,18 @@ static int		gnl_get_line(t_list **fdlist, t_fdnode *fdnode, char **line)
 		else
 		{
 			tmp = fdnode->line;
-			fdnode->line = ft_memjoin(tmp ? fdnode->line : NULL,
-										tmp ? fdnode->l : 0,
-										fdnode->chunk, fdnode->ci);
-			fdnode->l += fdnode->ci;
+			fdnode->line = ft_memjoin(fdnode->line, fdnode->l,
+										fdnode->chunk, fdnode->ci + 1);
+			fdnode->l += fdnode->ci + 1;
 			ft_memdel((void **)&tmp);
 			fdnode->ci = 0;
 			fdnode->chunk[fdnode->ci++] = c;
 		}
 	}
-	if (c == '\n')
+	if (st != GNL_ERR)
 	{
 		tmp = fdnode->line;
-		fdnode->line = ft_memjoin(tmp ? fdnode->line : NULL,
-									tmp ? fdnode->l : 0,
+		fdnode->line = ft_memjoin(fdnode->line, fdnode->l,
 									fdnode->chunk, fdnode->ci + 1);
 		ft_memdel((void **)&tmp);
 		*line = fdnode->line;
@@ -131,6 +129,8 @@ int main(void)
 	char *l;
 
 	fd = open("testgnl", O_RDONLY);
-	i = get_next_line(fd, &l);
+	while ((i = get_next_line(fd, &l)) == GNL_OK)
+		free(l);
+	close(fd);
 	return (i);
 }
