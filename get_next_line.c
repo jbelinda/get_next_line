@@ -6,12 +6,13 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/08 01:16:24 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/10 04:19:07 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/types.h>
 #include <sys/uio.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include "get_next_line.h"
 
@@ -22,8 +23,9 @@
 ** TODO: In case of ERR/EOF removes `fd' from `fdlist'
 */
 
-static int		gnl_getchar(u_char *c, t_fdnode *fd, t_fdnode **fdlist)
+static int		gnl_getchar(u_char *c, t_fdnode *fd, t_list **fdlist)
 {
+	(void)fdlist;
 	if (fd->i < fd->bytes_in_buf)
 		return ((*c = fd->buf[fd->i++]) ? GNL_OK : GNL_OK);
 	if ((fd->bytes_in_buf = read(fd->fd, fd->buf, BUFF_SIZE)) <= 0)
@@ -68,16 +70,42 @@ static t_fdnode	*gnl_fd_lookup(t_list **fdlist, int fd)
 ** and build line, terminated with '\0' instead of '\n'
 ** Returns GNL_OK on success, GNL_ERR on i/o error, GNL_EOF on EOF
 */
-static int		gnl_get_line(t_fdnode **fdlist, t_fdnode *fdnode, char **line)
+
+static int		gnl_get_line(t_list **fdlist, t_fdnode *fdnode, char **line)
 {
-	int		i;
-	char	*line;
+	int		st;
 	char	*tmp;
-	u_char	chunk[CHUNK_SIZE];
 	u_char	c;
 
-	*line = (char *)ft_memalloc(1);
-	i = 0;
+	fdnode->line = NULL;
+	fdnode->l = 0;
+	fdnode->ci = 0;
+	while (((st = gnl_getchar(&c, fdnode, fdlist)) == GNL_OK) && (c != '\n'))
+	{
+		if (fdnode->ci < CHUNK_SIZE - 1)
+			fdnode->chunk[fdnode->ci++] = c;
+		else
+		{
+			tmp = fdnode->line;
+			fdnode->line = ft_memjoin(tmp ? fdnode->line : NULL,
+										tmp ? fdnode->l : 0,
+										fdnode->chunk, fdnode->ci);
+			fdnode->l += fdnode->ci;
+			ft_memdel((void **)&tmp);
+			fdnode->ci = 0;
+			fdnode->chunk[fdnode->ci++] = c;
+		}
+	}
+	if (c == '\n')
+	{
+		tmp = fdnode->line;
+		fdnode->line = ft_memjoin(tmp ? fdnode->line : NULL,
+									tmp ? fdnode->l : 0,
+									fdnode->chunk, fdnode->ci + 1);
+		ft_memdel((void **)&tmp);
+		*line = fdnode->line;
+	}
+	return (st);
 }
 
 /*
@@ -94,4 +122,15 @@ int				get_next_line(int fd, char **line)
 		!(fdnode = gnl_fd_lookup(&fdlist, fd)))
 		return (GNL_ERR);
 	return (gnl_get_line(&fdlist, fdnode, line));
+}
+
+int main(void)
+{
+	int fd;
+	int i;
+	char *l;
+
+	fd = open("testgnl", O_RDONLY);
+	i = get_next_line(fd, &l);
+	return (i);
 }

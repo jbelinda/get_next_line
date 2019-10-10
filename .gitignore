@@ -1,7 +1,10 @@
+.vscode
+*.code-workspace
 *.o
 *.a
 *.gch
 *.swp
+*.dSYM
 test*
 */.gitignore
 /Makefile
