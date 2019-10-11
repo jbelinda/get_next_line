@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/10 04:19:07 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/11 20:16:20 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,37 +71,33 @@ static t_fdnode	*gnl_fd_lookup(t_list **fdlist, int fd)
 ** Returns GNL_OK on success, GNL_ERR on i/o error, GNL_EOF on EOF
 */
 
-static int		gnl_get_line(t_list **fdlist, t_fdnode *fdnode, char **line)
+static int		gnl_get_line(t_list **fdl, t_fdnode *fd, char **line)
 {
 	int		st;
 	char	*tmp;
 	u_char	c;
 
-	fdnode->line = NULL;
-	fdnode->l = 0;
-	fdnode->ci = 0;
-	while (((st = gnl_getchar(&c, fdnode, fdlist)) == GNL_OK) && (c != '\n'))
-	{
-		if (fdnode->ci < CHUNK_SIZE - 1)
-			fdnode->chunk[fdnode->ci++] = c;
+	fd->line = NULL;
+	fd->l = 0;
+	fd->ci = 0;
+	while (((st = gnl_getchar(&c, fd, fdl)) == GNL_OK) && (c != '\n'))
+		if (fd->ci < CHUNK_SIZE - 1)
+			fd->chunk[fd->ci++] = c;
 		else
 		{
-			tmp = fdnode->line;
-			fdnode->line = ft_memjoin(fdnode->line, fdnode->l,
-										fdnode->chunk, fdnode->ci + 1);
-			fdnode->l += fdnode->ci;
+			tmp = fd->line;
+			fd->line = ft_memjoin(fd->line, fd->l, fd->chunk, fd->ci + 1);
+			fd->l += fd->ci;
 			ft_memdel((void **)&tmp);
-			fdnode->ci = 0;
-			fdnode->chunk[fdnode->ci++] = c;
+			fd->ci = 0;
+			fd->chunk[fd->ci++] = c;
 		}
-	}
 	if (st != GNL_ERR)
 	{
-		tmp = fdnode->line;
-		fdnode->line = ft_memjoin(fdnode->line, fdnode->l,
-									fdnode->chunk, fdnode->ci + 1);
+		tmp = fd->line;
+		fd->line = ft_memjoin(fd->line, fd->l, fd->chunk, fd->ci + 1);
 		ft_memdel((void **)&tmp);
-		*line = fdnode->line;
+		*line = fd->line;
 	}
 	return (st);
 }
@@ -122,7 +118,7 @@ int				get_next_line(int fd, char **line)
 	return (gnl_get_line(&fdlist, fdnode, line));
 }
 
-int main(void)
+int	main(void)
 {
 	int fd;
 	int i;
