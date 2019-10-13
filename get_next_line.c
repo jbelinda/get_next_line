@@ -102,8 +102,11 @@ static int		gnl_get_line(t_list **fdl, t_fdnode *fd, char **ln)
 			fd->ci = 0;
 			fd->chunk[fd->ci++] = c;
 		}
-	if (st != GNL_ERR)
+	if (st != GNL_ERR && fd->ci)
+	{
+		st = GNL_OK;
 		*ln = gnl_build_ln(fd->line, fd->l, fd->chunk, fd->ci + 1);
+	}
 	return (st);
 }
 
@@ -130,7 +133,14 @@ int	main(void)
 
 	fd = open("testgnl", O_RDONLY);
 	while ((i = get_next_line(fd, &l)) == GNL_OK)
+	{
+		ft_putnbr(i);
+		ft_putstr(": ");
+		ft_putendl(l);
 		free(l);
+	}
+	ft_putnbr(i);
+	ft_putendl(NULL);
 	close(fd);
 	return (i);
 }
