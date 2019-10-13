@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
+/*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/11 20:16:20 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/13 06:21:53 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ static int		gnl_getchar(u_char *c, t_fdnode *fd, t_list **fdlist)
 ** Lookups for fd' in `fdlist', creates new node if `fd' not exist
 */
 
-static t_fdnode	*gnl_fd_lookup(t_list **fdlist, int fd)
+static t_fdnode	*gnl_fd_lookup(t_list **fdl, int fd)
 {
 	t_list			*iter;
 	t_fdnode		*sfd;
 
-	iter = *fdlist;
+	iter = *fdl;
 	while (iter)
 	{
 		if (((t_fdnode *)(iter->content))->fd == fd)
@@ -55,7 +55,7 @@ static t_fdnode	*gnl_fd_lookup(t_list **fdlist, int fd)
 		sfd->fd = fd;
 		if ((iter = ft_lstnew((const void *)sfd, sizeof(t_fdnode))))
 		{
-			ft_lstadd(fdlist, iter);
+			ft_lstadd(fdl, iter);
 			ft_memdel((void **)&sfd);
 			return ((t_fdnode *)(iter->content));
 		}
@@ -65,57 +65,61 @@ static t_fdnode	*gnl_fd_lookup(t_list **fdlist, int fd)
 	return (NULL);
 }
 
+static char		*gnl_build_ln(char *s1, size_t n1, u_char *s2, size_t n2)
+{
+	char	*s;
+
+	s = (char *)ft_memjoin(s1, n1, s2, n2);
+	ft_memdel((void **)&s1);
+	return (s);
+}
+
 /*
 ** Reads `fdnode' associated fd char by char until '\n', EOF, input error
 ** and build line, terminated with '\0' instead of '\n'
 ** Returns GNL_OK on success, GNL_ERR on i/o error, GNL_EOF on EOF
 */
 
-static int		gnl_get_line(t_list **fdl, t_fdnode *fd, char **line)
+static int		gnl_get_line(t_list **fdl, t_fdnode *fd, char **ln)
 {
 	int		st;
-	char	*tmp;
 	u_char	c;
 
 	fd->line = NULL;
 	fd->l = 0;
 	fd->ci = 0;
+	ft_bzero(fd->chunk, CHUNK_SIZE);
 	while (((st = gnl_getchar(&c, fd, fdl)) == GNL_OK) && (c != '\n'))
 		if (fd->ci < CHUNK_SIZE - 1)
 			fd->chunk[fd->ci++] = c;
 		else
 		{
-			tmp = fd->line;
-			fd->line = ft_memjoin(fd->line, fd->l, fd->chunk, fd->ci + 1);
+			fd->line = gnl_build_ln(fd->line, fd->l, fd->chunk, fd->ci + 1);
+			if (!fd->line)
+				return (GNL_ERR);
 			fd->l += fd->ci;
-			ft_memdel((void **)&tmp);
+			ft_bzero(fd->chunk, CHUNK_SIZE);
 			fd->ci = 0;
 			fd->chunk[fd->ci++] = c;
 		}
 	if (st != GNL_ERR)
-	{
-		tmp = fd->line;
-		fd->line = ft_memjoin(fd->line, fd->l, fd->chunk, fd->ci + 1);
-		ft_memdel((void **)&tmp);
-		*line = fd->line;
-	}
+		*ln = gnl_build_ln(fd->line, fd->l, fd->chunk, fd->ci + 1);
 	return (st);
 }
 
 /*
-** Read string from `fd'. assigns its address to `*line'
+** Read string from `fd'. assigns its address to `*ln'
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
 */
 
-int				get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **ln)
 {
-	static t_list	*fdlist = NULL;
-	t_fdnode		*fdnode;
+	static t_list	*fdl = NULL;
+	t_fdnode		*fdn;
 
-	if (fd < 0 || !line || read(fd, NULL, 0) ||
-		!(fdnode = gnl_fd_lookup(&fdlist, fd)))
+	if (fd < 0 || !ln || read(fd, NULL, 0) || !(fdn = gnl_fd_lookup(&fdl, fd)))
 		return (GNL_ERR);
-	return (gnl_get_line(&fdlist, fdnode, line));
+	return (gnl_get_line(&fdl, fdn, ln));
 }
 
 int	main(void)
