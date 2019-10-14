@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/13 06:21:53 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/14 04:58:37 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,33 @@
 
 static int		gnl_getchar(u_char *c, t_fdnode *fd, t_list **fdlist)
 {
-	(void)fdlist;
-	if (fd->i < fd->bytes_in_buf)
-		return ((*c = fd->buf[fd->i++]) ? GNL_OK : GNL_OK);
-	if ((fd->bytes_in_buf = read(fd->fd, fd->buf, BUFF_SIZE)) <= 0)
-		return (fd->bytes_in_buf == 0 ? GNL_EOF : GNL_ERR);
-	fd->i = 1;
-	return ((*c = fd->buf[0]) ? GNL_OK : GNL_OK);
+	t_list *cur;
+	t_list *prev;
+
+	if (fd->i == fd->bytes_in_buf)
+	{
+		if ((fd->bytes_in_buf = read(fd->fd, fd->buf, BUFF_SIZE)) <= 0)
+		{
+			cur = *fdlist;
+			prev = cur;
+			while (cur->content != (void *)fd)
+			{
+				prev = cur;
+				cur = cur->next;
+			}
+			if (prev == cur)
+				*fdlist = cur->next;
+			else
+				prev->next = cur->next;
+			ft_memdel(&cur->content);
+			ft_memdel((void **)&cur);
+			return (fd->bytes_in_buf == 0 ? GNL_EOF : GNL_ERR);
+		}
+		else
+			fd->i = 0;
+	}
+	*c = fd->buf[fd->i++];
+	return (GNL_OK);
 }
 
 /*
@@ -127,20 +147,36 @@ int				get_next_line(int fd, char **ln)
 
 int	main(void)
 {
-	int fd;
-	int i;
-	char *l;
+	int fd1, fd2;
+	int s1, s2;
+	char *l1, *l2;
 
-	fd = open("testgnl", O_RDONLY);
-	while ((i = get_next_line(fd, &l)) == GNL_OK)
+	fd1 = open("testgnl1", O_RDONLY);
+	fd2 = open("testgnl2", O_RDONLY);
+	while (1)
 	{
-		ft_putnbr(i);
-		ft_putstr(": ");
-		ft_putendl(l);
-		free(l);
+		s1 = get_next_line(fd1, &l1);
+		s2 = get_next_line(fd2, &l2);
+		if (s1 == GNL_OK)
+		{
+			ft_putnbr(fd1);
+			ft_putstr(": ");
+			ft_putendl(l1);
+			free(l1);
+		}
+		else
+			close(fd1);
+		if (s2 == GNL_OK)
+		{
+			ft_putnbr(fd2);
+			ft_putstr(": ");
+			ft_putendl(l2);
+			free(l2);
+		}
+		else
+			close(fd2);
+		if (s1 != GNL_OK && s2 != GNL_OK)
+			break ;
 	}
-	ft_putnbr(i);
-	ft_putendl(NULL);
-	close(fd);
-	return (i);
+	return (0);
 }
