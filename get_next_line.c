@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/14 04:58:37 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/15 02:11:29 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <sys/uio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "libft.h"
 #include "get_next_line.h"
 
 /*
@@ -135,13 +136,28 @@ static int		gnl_get_line(t_list **fdl, t_fdnode *fd, char **ln)
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
 */
 
-int				get_next_line(int fd, char **ln)
+int		get_next_line(const int fd, char **ln)
 {
-	static t_list	*fdl = NULL;
-	t_fdnode		*fdn;
+	static t_fds	fdl = {NULL, 0, 0};
+	void			*p;
+	size_t			i;
 
-	if (fd < 0 || !ln || read(fd, NULL, 0) || !(fdn = gnl_fd_lookup(&fdl, fd)))
+	if (fd < 0 || !ln || read(fd, NULL, 0))
 		return (GNL_ERR);
+	if (!fdl.fda)
+	{
+		if (!(fdl.fda = (t_fdn *)ft_memalloc(FDN_SZ * FDA_INIT_SZ)));
+			return (GNL_ERR);
+		fdl.fd_max = FDA_INIT_SZ;
+	}
+	if (fd > fdl.fd_max - 1)
+	{
+		i = fdl.fd_max + fdl.fd_max / FDA_INC + 1;
+		if (!(p = ft_memrealloc(fdl.fda, FDN_SZ * fdl.fd_max, FDN_SZ * i)))
+			return (GNL_ERR);
+		fdl.fd_max = i;
+		fdl.fda = (t_fdn *)p;
+	}
 	return (gnl_get_line(&fdl, fdn, ln));
 }
 

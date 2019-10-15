@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbelinda <jbelinda@42.fr>                  +#+  +:+       +#+        */
+/*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/10 03:40:20 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/15 02:11:19 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 # include <limits.h>
 # include <stddef.h>
 # include <sys/types.h>
-# include "libft.h"
 
 # ifndef BUFF_SIZE
 #  define BUFF_SIZE (4096)
+# elif BUFF_SIZE <=0
+#  error Wrong BUFF_SIZE value
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
 #  define BUFF_SIZE (4096)
@@ -33,19 +34,27 @@
 # define GNL_EOF (0)
 # define GNL_ERR (-1)
 
-typedef	struct s_fdnode	t_fdnode;
+# define FDN_SZ (sizeof(t_fdn))
+# define FDA_INIT_SZ (8)
+# define FDA_INC (10)
 
-struct		s_fdnode {
-	int		fd;
-	size_t	bytes_in_buf;
-	size_t	i;
-	u_char	buf[BUFF_SIZE];
-	size_t	ci;
-	u_char	chunk[CHUNK_SIZE];
-	size_t	l;
-	char	*line;
-};
+typedef struct	s_fdn {
+	size_t		bytes_in_buf;
+	size_t		i;
+	char		*buf[BUFF_SIZE];
+	size_t		ci;
+	char		*chunk[CHUNK_SIZE];
+	size_t		l;
+	char		*line;
+}				t_fdn;
 
-int			get_next_line(const int fd, char **line);
+typedef	struct	s_fds
+{
+	t_fdn		*fda;
+	size_t		fd_count;
+	size_t		fd_max;
+}				t_fds;
+
+int				get_next_line(const int fd, char **line);
 
 #endif
