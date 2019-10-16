@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/15 02:11:29 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/16 06:34:09 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,58 +32,12 @@ static int		gnl_getchar(u_char *c, t_fdnode *fd, t_list **fdlist)
 	if (fd->i == fd->bytes_in_buf)
 	{
 		if ((fd->bytes_in_buf = read(fd->fd, fd->buf, BUFF_SIZE)) <= 0)
-		{
-			cur = *fdlist;
-			prev = cur;
-			while (cur->content != (void *)fd)
-			{
-				prev = cur;
-				cur = cur->next;
-			}
-			if (prev == cur)
-				*fdlist = cur->next;
-			else
-				prev->next = cur->next;
-			ft_memdel(&cur->content);
-			ft_memdel((void **)&cur);
 			return (fd->bytes_in_buf == 0 ? GNL_EOF : GNL_ERR);
-		}
 		else
 			fd->i = 0;
 	}
 	*c = fd->buf[fd->i++];
 	return (GNL_OK);
-}
-
-/*
-** Lookups for fd' in `fdlist', creates new node if `fd' not exist
-*/
-
-static t_fdnode	*gnl_fd_lookup(t_list **fdl, int fd)
-{
-	t_list			*iter;
-	t_fdnode		*sfd;
-
-	iter = *fdl;
-	while (iter)
-	{
-		if (((t_fdnode *)(iter->content))->fd == fd)
-			return ((t_fdnode *)(iter->content));
-		iter = iter->next;
-	}
-	if ((sfd = (t_fdnode *)ft_memalloc(sizeof(t_fdnode))))
-	{
-		sfd->fd = fd;
-		if ((iter = ft_lstnew((const void *)sfd, sizeof(t_fdnode))))
-		{
-			ft_lstadd(fdl, iter);
-			ft_memdel((void **)&sfd);
-			return ((t_fdnode *)(iter->content));
-		}
-		else
-			ft_memdel((void**)&sfd);
-	}
-	return (NULL);
 }
 
 static char		*gnl_build_ln(char *s1, size_t n1, u_char *s2, size_t n2)
@@ -152,11 +106,14 @@ int		get_next_line(const int fd, char **ln)
 	}
 	if (fd > fdl.fd_max - 1)
 	{
-		i = fdl.fd_max + fdl.fd_max / FDA_INC + 1;
-		if (!(p = ft_memrealloc(fdl.fda, FDN_SZ * fdl.fd_max, FDN_SZ * i)))
+		if (p = ft_memrealloc(fdl.fda, FDN_SZ * fdl.fd_max, FDN_SZ * (fd + 1)))
+		{
+			fdl.fd_max = fd;
+			fdl.fd_count++;
+			fdl.fda = (t_fdn *)p;
+		}
+		else
 			return (GNL_ERR);
-		fdl.fd_max = i;
-		fdl.fda = (t_fdn *)p;
 	}
 	return (gnl_get_line(&fdl, fdn, ln));
 }
