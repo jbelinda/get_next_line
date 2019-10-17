@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/17 13:27:22 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/17 14:13:41 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** Releases dynamic data associated with fd.
 ** Also releases all data if there are no active fds left
 */
-
+/* 
 static void		gnl_cleanup(t_fds *fdl, int fd)
 {
 	ft_memdel((void **)&(fdl->fda)[fd]);
@@ -29,7 +29,7 @@ static void		gnl_cleanup(t_fds *fdl, int fd)
 		ft_memdel((void **)&(fdl->fda));
 }
 
-/*
+ *//*
 **
 */
 
@@ -89,6 +89,8 @@ static char		*gnl_build_ln(char *s1, size_t n1, char *s2, size_t n2)
 ** and build line, terminated with '\0' instead of '\n'
 ** Returns GNL_OK on success, GNL_ERR on i/o error, GNL_EOF on EOF
 */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
 static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 {
 	int		st;
@@ -120,6 +122,8 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 */
 	return (st);
 }
+#pragma clang diagnostic pop
+
 /*
 ** Read string from `fd'. assigns its address to `*ln'
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
@@ -128,11 +132,21 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 int		get_next_line(const int fd, char **ln)
 {
 	static t_fds	fdl = {NULL, 0, 0};
+	int	status;
 
 	if (!ln || gnl_validate_fd(fd, &fdl) != GNL_OK)
 		return (GNL_ERR);
-	return (gnl_get_line(&fdl, fd, ln));
+	status = gnl_get_line(&fdl, fd, ln);
+	if (status != GNL_OK)
+	{
+		ft_memdel((void **)&(fdl.fda[fd]));
+		if (--fdl.fd_count == 0)
+			ft_memdel((void **)&(fdl.fda));
+	}
+	return (status);
 }
+
+#ifdef DEBUG
 
 int	main(void)
 {
@@ -169,3 +183,4 @@ int	main(void)
 	}
 	return (0);
 }
+#endif
