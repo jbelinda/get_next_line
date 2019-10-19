@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/17 13:06:18 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/19 08:47:52 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 # ifndef BUFF_SIZE
 #  define BUFF_SIZE (4096)
-# elif BUFF_SIZE <=0
+# endif
+# if BUFF_SIZE <=0
 #  error Wrong BUFF_SIZE value
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
