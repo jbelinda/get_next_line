@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/19 09:24:17 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/19 09:36:05 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
 */
 
-int		get_next_line(const int fd, char **ln)
+int				get_next_line(const int fd, char **ln)
 {
 	static t_fds	fdl = {NULL, 0, 0};
 	int				status;
