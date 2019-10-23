@@ -25,7 +25,7 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 		return (GNL_ERR);
 	if (fd > fds->fd_max)
 	{
-		p = ft_memrealloc(fds->fda, PTR_SZ * fds->fd_max, PTR_SZ * (fd + 1));
+		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), PTR_SZ * (fd + 1));
 		if (p)
 		{
 			fds->fda = p;
