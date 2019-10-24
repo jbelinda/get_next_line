@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/24 02:44:45 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/24 04:01:08 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 		return (GNL_ERR);
 	if (fd > fds->fd_max)
 	{
-		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), \
-							PTR_SZ * (fd + 1));
+		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), PTR_SZ * (fd + 1));
 		if (p)
 		{
 			fds->fda = p;
@@ -121,7 +120,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 
 int				get_next_line(const int fd, char **ln)
 {
-	static t_fds	fdl = {NULL, 0, 0};
+	static t_fds	fdl = {NULL, 0, -1};
 	int				status;
 
 	if (!ln || gnl_validate_fd(fd, &fdl) != GNL_OK)
@@ -135,57 +134,3 @@ int				get_next_line(const int fd, char **ln)
 	}
 	return (status);
 }
-
-#ifdef DEBUG
-
-#include <stdio.h>
-
-int	main(int ac, char *av[])
-{
-	int i, c;
-	int st;
-	char *l;
-
-	if (ac == 1)
-	{
-		ft_putendl("Usage: test_gnl file [file]...");
-		return (1);
-	}
-	
-	int fd[ac - 1];
-	int ln[ac - 1];
-
-	for (i = 0; i < ac - 1; i++)
-	{
-		fd[i] = open(av[i + 1], O_RDONLY);
-		ln[i] = 0;
-	}
-	c = ac - 1;
-	while (c)
-	{
-		for (i = 0; i < ac - 1; i++)
-		{
-			if (fd[i] < 0)
-				continue;
-			st = get_next_line(fd[i], &l);
-			if (st == GNL_OK)
-			{
-				printf("%03d/%05d %s\n", fd[i], ++ln[i], l);
-/*
-				ft_putnbr(fd[i]);
-				ft_putstr(": ");
-				ft_putendl(l);
-*/
-				free(l);
-			}
-			else
-			{
-				close(fd[i]);
-				fd[i] = -1;
-				c--;
-			}
-		}
-	}
-	return (0);
-}
-#endif
