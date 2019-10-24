@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/19 09:36:05 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/24 02:44:45 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 		return (GNL_ERR);
 	if (fd > fds->fd_max)
 	{
-		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), PTR_SZ * (fd + 1));
+		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), \
+							PTR_SZ * (fd + 1));
 		if (p)
 		{
 			fds->fda = p;
@@ -84,6 +85,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 	int		status;
 	char	c;
 	t_fdn	*f;
+	char	*tmp;
 
 	f = fds->fda[fd];
 	f->l = 0;
@@ -101,8 +103,9 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 		if (f->ci == (CHUNK_SIZE - 1))
 		{
 			f->chunk[f->ci] = '\0';
-			*ln = (char *)ft_memjoin(f->line, f->l, f->chunk, f->ci + 1);
-			ft_memdel((void **)&f->line);
+			tmp = f->line;
+			f->line = (char *)ft_memjoin(f->line, f->l, f->chunk, f->ci + 1);
+			ft_memdel((void **)&tmp);
 			f->l += f->ci;
 			f->ci = 0;
 		}
@@ -135,6 +138,8 @@ int				get_next_line(const int fd, char **ln)
 
 #ifdef DEBUG
 
+#include <stdio.h>
+
 int	main(int ac, char *av[])
 {
 	int i, c;
@@ -148,9 +153,13 @@ int	main(int ac, char *av[])
 	}
 	
 	int fd[ac - 1];
+	int ln[ac - 1];
 
 	for (i = 0; i < ac - 1; i++)
+	{
 		fd[i] = open(av[i + 1], O_RDONLY);
+		ln[i] = 0;
+	}
 	c = ac - 1;
 	while (c)
 	{
@@ -161,9 +170,12 @@ int	main(int ac, char *av[])
 			st = get_next_line(fd[i], &l);
 			if (st == GNL_OK)
 			{
+				printf("%03d/%05d %s\n", fd[i], ++ln[i], l);
+/*
 				ft_putnbr(fd[i]);
 				ft_putstr(": ");
 				ft_putendl(l);
+*/
 				free(l);
 			}
 			else
