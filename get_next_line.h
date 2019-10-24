@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/19 08:47:52 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/24 23:23:51 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 
 # define PTR_SZ (sizeof(void *))
 # define FDN_SZ (sizeof(t_fdn))
-# define FDA_INIT_SZ (8)
 
 typedef struct	s_fdn {
 	size_t		bytes_in_buf;

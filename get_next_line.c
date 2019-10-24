@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/24 04:01:08 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/25 00:05:33 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 		return (GNL_ERR);
 	if (fd > fds->fd_max)
 	{
-		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), PTR_SZ * (fd + 1));
+		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), \
+							PTR_SZ * (fd + 1));
 		if (p)
 		{
 			fds->fda = p;
@@ -59,20 +60,6 @@ static int		gnl_getchar(char *c, int fd, t_fdn *fdn)
 	return (GNL_OK);
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
-
-static char		*gnl_build_ln(char *s1, size_t n1, char *s2, size_t n2)
-{
-	char	*s;
-
-	s = (char *)ft_memjoin(s1, n1, s2, n2);
-	ft_memdel((void **)&s1);
-	return (s);
-}
-
-#pragma clang diagnostic pop
-
 /*
 ** Reads `fdnode' associated fd char by char until '\n', EOF, input error
 ** and build line, terminated with '\0' instead of '\n'
@@ -91,26 +78,20 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 	f->ci = 0;
 	while ((status = gnl_getchar(&c, fd, f)) != GNL_ERR)
 	{
-		if (status == GNL_EOF || c == '\n')
+		if (status == GNL_EOF || c == '\n' || f->ci == (CHUNK_SIZE - 1))
 		{
 			f->chunk[f->ci] = '\0';
-			*ln = (char *)ft_memjoin(f->line, f->l, f->chunk, f->ci + 1);
-			ft_memdel((void **)&f->line);
-			status = f->ci ? GNL_OK : status;
-			break ;
-		}
-		if (f->ci == (CHUNK_SIZE - 1))
-		{
-			f->chunk[f->ci] = '\0';
-			tmp = f->line;
-			f->line = (char *)ft_memjoin(f->line, f->l, f->chunk, f->ci + 1);
+			tmp = *ln;
+			*ln = (char *)ft_memjoin(*ln, f->l, f->chunk, f->ci + 1);
 			ft_memdel((void **)&tmp);
+			if (status == GNL_EOF || c == '\n')
+				break ;
 			f->l += f->ci;
 			f->ci = 0;
 		}
 		f->chunk[f->ci++] = c;
 	}
-	return (status);
+	return ((status != GNL_ERR && f->ci) ? GNL_OK : status);
 }
 
 /*
