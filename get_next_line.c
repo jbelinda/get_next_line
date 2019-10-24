@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/25 00:05:33 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/25 00:53:40 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,27 @@
 #include "libft.h"
 #include "get_next_line.h"
 
+/*
+** Validates `fd', dynamically reallocate array for `fd'-related data
+*/
+
 static int		gnl_validate_fd(int fd, t_fds *fds)
 {
-	void	*p;
-
 	if (fd < 0 || read(fd, NULL, 0))
 		return (GNL_ERR);
 	if (fd > fds->fd_max)
 	{
-		p = ft_memrealloc(fds->fda, PTR_SZ * (fds->fd_max + 1), \
-							PTR_SZ * (fd + 1));
-		if (p)
-		{
-			fds->fda = p;
+		if ((fds->fda = ft_memrealloc(fds->fda,
+			(fds->fd_max + 1) * PTR_SZ, (fd + 1) * PTR_SZ)))
 			fds->fd_max = fd;
-		}
 		else
 			return (GNL_ERR);
 	}
 	if (fds->fda[fd] == NULL)
+	{
 		if ((fds->fda[fd] = (t_fdn *)ft_memalloc(FDN_SZ)))
 			fds->fd_count++;
+	}
 	return (fds->fda[fd] ? GNL_OK : GNL_ERR);
 }
 
@@ -45,7 +45,6 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 ** Get next character from `fd', implementing buffered input
 ** Assigns readed character to `c' and return GNL_OK or
 ** GNL_ERR on file error or GNL_EOF on end of file.
-** TODO: In case of ERR/EOF removes `fd' from `fdlist'
 */
 
 static int		gnl_getchar(char *c, int fd, t_fdn *fdn)
@@ -61,7 +60,7 @@ static int		gnl_getchar(char *c, int fd, t_fdn *fdn)
 }
 
 /*
-** Reads `fdnode' associated fd char by char until '\n', EOF, input error
+** Reads `fd' char by char until '\n', EOF, input error
 ** and build line, terminated with '\0' instead of '\n'
 ** Returns GNL_OK on success, GNL_ERR on i/o error, GNL_EOF on EOF
 */
@@ -97,6 +96,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 /*
 ** Read string from `fd'. assigns its address to `*ln'
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
+** Relases memory for fd-related data on all fds EOF/ERR
 */
 
 int				get_next_line(const int fd, char **ln)
