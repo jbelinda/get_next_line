@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/24 23:23:51 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/25 01:33:22 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,29 @@
 # define PTR_SZ (sizeof(void *))
 # define FDN_SZ (sizeof(t_fdn))
 
+/*
+** buf          - data readed from fd
+** bytes_in_buf - counter of readed bytes
+** i            - current position in buf
+** chunk        - acquired part of string
+** ci           - current position in chunk
+** len          - length of assembled string
+*/
+
 typedef struct	s_fdn {
 	size_t		bytes_in_buf;
 	size_t		i;
 	char		buf[BUFF_SIZE];
 	size_t		ci;
 	char		chunk[CHUNK_SIZE];
-	size_t		l;
-	char		*line;
+	size_t		len;
 }				t_fdn;
+
+/*
+** fda      - array (indexed by fd) of fd-related data
+** fd_count - active fds
+** fd_max   - maximal fd (of active fds)
+*/
 
 typedef	struct	s_fds
 {

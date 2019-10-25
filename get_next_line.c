@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/25 00:53:40 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/25 01:24:42 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 	if (fd > fds->fd_max)
 	{
 		if ((fds->fda = ft_memrealloc(fds->fda,
-			(fds->fd_max + 1) * PTR_SZ, (fd + 1) * PTR_SZ)))
+			(fds->fd_max + 1) * PTR_SZ,
+			(fd + 1) * PTR_SZ)))
 			fds->fd_max = fd;
 		else
 			return (GNL_ERR);
@@ -73,7 +74,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 	char	*tmp;
 
 	f = fds->fda[fd];
-	f->l = 0;
+	f->len = 0;
 	f->ci = 0;
 	while ((status = gnl_getchar(&c, fd, f)) != GNL_ERR)
 	{
@@ -81,11 +82,11 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 		{
 			f->chunk[f->ci] = '\0';
 			tmp = *ln;
-			*ln = (char *)ft_memjoin(*ln, f->l, f->chunk, f->ci + 1);
+			*ln = (char *)ft_memjoin(*ln, f->len, f->chunk, f->ci + 1);
 			ft_memdel((void **)&tmp);
 			if (status == GNL_EOF || c == '\n')
 				break ;
-			f->l += f->ci;
+			f->len += f->ci;
 			f->ci = 0;
 		}
 		f->chunk[f->ci++] = c;
