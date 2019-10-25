@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/25 01:24:42 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/25 19:37:59 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 			f->chunk[f->ci] = '\0';
 			tmp = *ln;
 			*ln = (char *)ft_memjoin(*ln, f->len, f->chunk, f->ci + 1);
-			ft_memdel((void **)&tmp);
+			if (f->len)
+				ft_memdel((void **)&tmp);
 			if (status == GNL_EOF || c == '\n')
 				break ;
 			f->len += f->ci;
