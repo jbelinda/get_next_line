@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/25 19:37:59 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/27 02:27:41 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 }
 
 /*
-** Read string from `fd'. assigns its address to `*ln'
+** Read '\n'-terminated string from `fd'. assigns its address to `*ln'
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
 ** Relases memory for fd-related data on all fds EOF/ERR
 */
