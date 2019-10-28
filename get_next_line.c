@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/28 19:01:35 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/28 19:04:57 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 /*
 ** Get next character from `fd', implementing buffered input
 ** Assigns readed character to `c' and return GNL_OK or
-** GNL_ERR on file error or GNL_EOF on end of file.
+** GNL_ERR on file read error or GNL_EOF on end of file.
 */
 
 static int		gnl_getchar(char *c, int fd, t_fdn *fdn)
