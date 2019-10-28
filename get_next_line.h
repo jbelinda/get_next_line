@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/28 19:02:56 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/28 19:08:49 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef	struct	s_fds
 ** Read '\n'-terminated string from `fd'. assigns its address to `*ln'
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF.
 ** In case of invalid `fd' or `ln == NULL' GNL_ERR returned.
+**
+** It's caller's hemorroida to free ln-occupied memory
 */
 
 int				get_next_line(const int fd, char **line);
