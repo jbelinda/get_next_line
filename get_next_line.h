@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/28 19:08:49 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/28 23:08:39 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,19 @@
 # include <limits.h>
 # include <stddef.h>
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE (4096)
-# endif
-# if BUFF_SIZE <= 0
-#  error Wrong BUFF_SIZE value
-# elif BUFF_SIZE > SSIZE_MAX
-#  undef BUFF_SIZE
-#  define BUFF_SIZE (4096)
-# endif
+# define BUFF_SIZE (1)
+
+/*
+** # ifndef BUFF_SIZE
+** #  define BUFF_SIZE (4096)
+** # endif
+** # if BUFF_SIZE <= 0
+** #  error Wrong BUFF_SIZE value
+** # elif BUFF_SIZE > SSIZE_MAX
+** #  undef BUFF_SIZE
+** #  define BUFF_SIZE (4096)
+** # endif
+*/
 
 # ifndef CHUNK_SIZE
 #  define CHUNK_SIZE (4096)
