@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/28 18:51:44 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/28 19:02:56 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # ifndef BUFF_SIZE
 #  define BUFF_SIZE (4096)
 # endif
-# if BUFF_SIZE <=0
+# if BUFF_SIZE <= 0
 #  error Wrong BUFF_SIZE value
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
@@ -36,6 +36,7 @@
 
 # define PTR_SZ (sizeof(void *))
 # define FDN_SZ (sizeof(t_fdn))
+# define FD_INC (4)
 
 /*
 ** fd related data
