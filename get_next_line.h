@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/25 01:33:22 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/28 18:51:44 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define FDN_SZ (sizeof(t_fdn))
 
 /*
+** fd related data
+**
 ** buf          - data readed from fd
 ** bytes_in_buf - counter of readed bytes
 ** i            - current position in buf
@@ -56,9 +58,9 @@ typedef struct	s_fdn {
 }				t_fdn;
 
 /*
-** fda      - array (indexed by fd) of fd-related data
+** fda      - array (indexed by `fd') of fd-related data
 ** fd_count - active fds
-** fd_max   - maximal fd (of active fds)
+** fd_max   - maximum fds `fda' may contain
 */
 
 typedef	struct	s_fds
@@ -67,6 +69,12 @@ typedef	struct	s_fds
 	int			fd_count;
 	int			fd_max;
 }				t_fds;
+
+/*
+** Read '\n'-terminated string from `fd'. assigns its address to `*ln'
+** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF.
+** In case of invalid `fd' or `ln == NULL' GNL_ERR returned.
+*/
 
 int				get_next_line(const int fd, char **line);
 
