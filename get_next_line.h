@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/31 00:58:26 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/31 01:15:13 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@
 /*
 ** This fucking moulinette got crazy eating this
 **
-** # ifndef BUFF_SIZE
-** #  define BUFF_SIZE (4096)
+** # ifndef BUFF*SIZE
+** #  define BUFF*SIZE (4096)
 ** # endif
-** # if BUFF_SIZE <= 0
-** #  error Wrong BUFF_SIZE value
-** # elif BUFF_SIZE > SSIZE_MAX
-** #  undef BUFF_SIZE
-** #  define BUFF_SIZE (4096)
+** # if BUFF*SIZE <= 0
+** #  error Wrong BUFF*SIZE value
+** # elif BUFF*SIZE > SSIZE_MAX
+** #  undef BUFF*SIZE
+** #  define BUFF*SIZE (4096)
 ** # endif
 */
 
