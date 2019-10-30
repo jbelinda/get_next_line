@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/30 03:31:46 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/30 03:33:29 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 */
 
 # ifndef CHUNK_SIZE
-#  define CHUNK_SIZE (2)
+#  define CHUNK_SIZE (256)
 # endif
 
 # define GNL_OK (1)
