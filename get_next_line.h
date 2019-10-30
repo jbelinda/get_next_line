@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/28 23:08:39 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/30 03:31:46 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 # include <limits.h>
 # include <stddef.h>
 
-# define BUFF_SIZE (1)
+# define BUFF_SIZE (4096)
 
 /*
+** This fucking moulinette got crazy eating this
+**
 ** # ifndef BUFF_SIZE
 ** #  define BUFF_SIZE (4096)
 ** # endif
@@ -31,7 +33,7 @@
 */
 
 # ifndef CHUNK_SIZE
-#  define CHUNK_SIZE (4096)
+#  define CHUNK_SIZE (2)
 # endif
 
 # define GNL_OK (1)
