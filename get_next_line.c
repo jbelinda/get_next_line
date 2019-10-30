@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/28 19:09:10 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:56:37 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,10 @@ int				get_next_line(const int fd, char **ln)
 	{
 		ft_memdel((void **)&(fdl.fda[fd]));
 		if (--fdl.fd_count == 0)
+		{
 			ft_memdel((void **)&(fdl.fda));
+			fdl.fd_max = -1;
+		}
 	}
 	return (status);
 }

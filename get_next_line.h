@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/30 03:33:29 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:58:26 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <stddef.h>
 
 # define BUFF_SIZE (4096)
+# if BUFF_SIZE <= 0
+#  error Wrong BUFF_SIZE value
+# endif
 
 /*
 ** This fucking moulinette got crazy eating this
