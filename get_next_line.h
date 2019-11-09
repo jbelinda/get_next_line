@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/31 01:15:13 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/11/09 23:52:59 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@
 # include <stddef.h>
 
 # define BUFF_SIZE (4096)
+
 # if BUFF_SIZE <= 0
+#  error Wrong BUFF_SIZE value
+# endif
+
+# if BUFF_SIZE > SSIZE_MAX
 #  error Wrong BUFF_SIZE value
 # endif
 

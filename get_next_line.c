@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/10/31 00:56:37 by jbelinda         ###   ########.fr       */
+/*   Updated: 2019/11/09 23:59:04 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,7 @@ int				get_next_line(const int fd, char **ln)
 
 	if (!ln || gnl_validate_fd(fd, &fdl) != GNL_OK)
 		return (GNL_ERR);
-	if ((status = gnl_get_line(&fdl, fd, ln)) == GNL_EOF)
-		ft_memdel((void **)ln);
-	if (status != GNL_OK)
+	if ((status = gnl_get_line(&fdl, fd, ln)) != GNL_OK)
 	{
 		ft_memdel((void **)&(fdl.fda[fd]));
 		if (--fdl.fd_count == 0)
@@ -118,6 +116,8 @@ int				get_next_line(const int fd, char **ln)
 			ft_memdel((void **)&(fdl.fda));
 			fdl.fd_max = -1;
 		}
+		if (status == GNL_EOF)
+			ft_memdel((void **)ln);
 	}
 	return (status);
 }
