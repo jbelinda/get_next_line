@@ -108,7 +108,8 @@ int				get_next_line(const int fd, char **ln)
 
 	if (!ln || gnl_validate_fd(fd, &fdl) != GNL_OK)
 		return (GNL_ERR);
-	status = gnl_get_line(&fdl, fd, ln);
+	if ((status = gnl_get_line(&fdl, fd, ln)) == GNL_EOF)
+		ft_memdel((void **)ln);
 	if (status != GNL_OK)
 	{
 		ft_memdel((void **)&(fdl.fda[fd]));
