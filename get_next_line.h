@@ -16,29 +16,19 @@
 # include <limits.h>
 # include <stddef.h>
 
-# define BUFF_SIZE (4096)
-
-# if BUFF_SIZE <= 0
-#  error Wrong BUFF_SIZE value
-# endif
-
-# if BUFF_SIZE > SSIZE_MAX
-#  error Wrong BUFF_SIZE value
-# endif
-
 /*
 ** This fucking moulinette got crazy eating this
-**
-** # ifndef BUFF*SIZE
-** #  define BUFF*SIZE (4096)
-** # endif
-** # if BUFF*SIZE <= 0
-** #  error Wrong BUFF*SIZE value
-** # elif BUFF*SIZE > SSIZE_MAX
-** #  undef BUFF*SIZE
-** #  define BUFF*SIZE (4096)
-** # endif
 */
+
+# ifndef BUFF_SIZE
+#  define BUFF_SIZE (4096)
+# endif
+# if BUFF_SIZE < 1
+#  error Wrong BUFF*SIZE value
+# elif BUFF_SIZE > SSIZE_MAX
+#  undef BUFF_SIZE
+#  define BUFF_SIZE (4096)
+# endif
 
 # ifndef CHUNK_SIZE
 #  define CHUNK_SIZE (256)

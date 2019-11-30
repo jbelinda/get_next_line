@@ -98,7 +98,7 @@ static int		gnl_get_line(t_fds *fds, int fd, char **ln)
 /*
 ** Read '\n'-terminated string from `fd'. assigns its address to `*ln'
 ** returns GNL_OK on success, GNL_ERR on error, GNL_EOF on EOF
-** Relases memory for fd-related data on all fds EOF/ERR
+** Releases memory for fd-related data on all fds EOF/ERR
 */
 
 int				get_next_line(const int fd, char **ln)
