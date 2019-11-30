@@ -24,7 +24,7 @@
 #  define BUFF_SIZE (4096)
 # endif
 # if BUFF_SIZE < 1
-#  error Wrong BUFF*SIZE value
+#  error Wrong BUFF_SIZE value
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
 #  define BUFF_SIZE (4096)
