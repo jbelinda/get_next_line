@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:22:46 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/11/09 23:59:04 by jbelinda         ###   ########.fr       */
+/*   Updated: 2020/04/23 19:15:47 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ static int		gnl_validate_fd(int fd, t_fds *fds)
 	if (fd > fds->fd_max)
 	{
 		if ((fds->fda = ft_memrealloc(fds->fda,
-				(fds->fd_max + 1) * PTR_SZ,
-				(fd + 1 + FD_INC) * PTR_SZ)))
+				(fds->fd_max + 1) * sizeof(void *),
+				(fd + 1 + FD_INC) * sizeof(void *))))
 			fds->fd_max = fd + FD_INC;
 		else
 			return (GNL_ERR);
 	}
 	if (fds->fda[fd] == NULL)
 	{
-		if ((fds->fda[fd] = (t_fdn *)ft_memalloc(FDN_SZ)))
+		if ((fds->fda[fd] = (t_fdn *)ft_memalloc(sizeof(t_fdn))))
 			fds->fd_count++;
 	}
 	return (fds->fda[fd] ? GNL_OK : GNL_ERR);

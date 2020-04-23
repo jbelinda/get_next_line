@@ -6,7 +6,7 @@
 /*   By: jbelinda <jbelinda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 05:24:25 by jbelinda          #+#    #+#             */
-/*   Updated: 2019/11/09 23:52:59 by jbelinda         ###   ########.fr       */
+/*   Updated: 2020/04/23 19:16:01 by jbelinda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,24 @@
 */
 
 # ifndef BUFF_SIZE
-#  define BUFF_SIZE (4096)
+#  define BUFF_SIZE 4096
 # endif
 # if BUFF_SIZE < 1
 #  error Wrong BUFF_SIZE value
 # elif BUFF_SIZE > SSIZE_MAX
 #  undef BUFF_SIZE
-#  define BUFF_SIZE (4096)
+#  define BUFF_SIZE 4096
 # endif
 
 # ifndef CHUNK_SIZE
-#  define CHUNK_SIZE (256)
+#  define CHUNK_SIZE 256
 # endif
 
-# define GNL_OK (1)
-# define GNL_EOF (0)
-# define GNL_ERR (-1)
+# define GNL_OK 1
+# define GNL_EOF 0
+# define GNL_ERR -1
 
-# define PTR_SZ (sizeof(void *))
-# define FDN_SZ (sizeof(t_fdn))
-# define FD_INC (4)
+# define FD_INC 4
 
 /*
 ** fd related data
